@@ -1,10 +1,10 @@
 "use client";
 
+import React, { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 export const dynamic = 'force-dynamic';
 
-export default function Verify() {
+function VerifyContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const projectName = searchParams.get("project") || "Unknown";
@@ -153,5 +153,13 @@ export default function Verify() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Verify() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyContent />
+    </Suspense>
   );
 }
