@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 export const dynamic = 'force-dynamic';
-export default function Manage() {
+
+function ManageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const projectName = searchParams.get("project") || "Unknown Project";
@@ -70,6 +71,7 @@ export default function Manage() {
       return;
     }
     reloadMembers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectName]);
 
   const available = allUsers.filter(
@@ -243,5 +245,14 @@ export default function Manage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Export default with Suspense boundary
+export default function Manage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ManageContent />
+    </Suspense>
   );
 }
